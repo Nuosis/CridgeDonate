@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import variables from "./Environment/env.json"
+// import variables from "./Environment/env.json"
 
 const AuthContext = createContext();
 
@@ -7,12 +7,12 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [authState, setAuthState] = useState({
-        token: variables.token,
-        apiKey: variables.apiKey,
+        token: process.env.REACT_APP_CBS_TOKEN,
+        apiKey: process.env.REACT_APP_CBS_APIKEY,
         userToken: "",
-        adminUserName: variables.adminUserName,
-        adminPassword: variables.adminPassword,
-        server: variables.server,
+        adminUserName: process.env.REACT_APP_CBS_USER_NAME,
+        adminPassword: process.env.REACT_APP_CBS_PASSWORD,
+        server: "https://server.claritybusinesssolutions.ca:4343",
         errorMessage: null, // For storing login errors
     });
 
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
         };
 
         try {        
-            const response = await fetch(`${variables.server}/createUser`, {
+            const response = await fetch(`https://server.claritybusinesssolutions.ca:4343/createUser`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

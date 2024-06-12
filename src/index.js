@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <App /> {/* This now correctly renders the App component */}
+      <App />
     </AuthProvider>
   </React.StrictMode>
 );

@@ -1,11 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider } from './AuthContext'; // Import your AuthContext
-import { WorkOrderProvider } from './WorkOrderContext'; // Import your AuthContext
 import { UserProvider } from './UserContext';
-import SignupPage from './Security/SignupPage';
-import CustomerPortal from './CustomerPortal'; // Your protected component
-import ProtectedRoute from './ProtectedRoute'; // Your ProtectedRoute component
+import Donate from './Donate';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
@@ -17,25 +14,42 @@ if (!stripePromise) {
   console.log('Stripe initialized successfully');
 }
 
+const userName = process.env.REACT_APP_CBS_USER_NAME
+if (!userName) {
+  console.error('Failed to initialize CBS Data: User Name missing');
+} 
+
+const password = process.env.REACT_APP_CBS_PASSWORD;
+if (!password) {
+  console.error('Failed to initialize CBS Data: password missing');
+} 
+
+const token = process.env.REACT_APP_CBS_USER_NAME
+if (!token) {
+  console.error('Failed to initialize CBS Data: token missing');
+} 
+
+const apiKey = process.env.REACT_APP_CBS_PASSWORD;
+if (!apiKey) {
+  console.error('Failed to initialize CBS Data: apiKey missing');
+} else {
+  console.log('CBS Data initialized successfully');
+}
+
 function App() {
   return (
     <AuthProvider> {/* Wrap your application in AuthProvider */}
       <UserProvider>
-        <WorkOrderProvider>
           <Router>
             <Routes> {/* Use `Routes` instead of `Switch` */}
-              <Route path="/login" element={<SignupPage />} />
-              <Route path="/customer-portal" element={
-                <ProtectedRoute>
-                  <Elements stripe={stripePromise}>
-                    <CustomerPortal />
-                  </Elements>
-                </ProtectedRoute>
+              <Route path="/donate" element={
+                <Elements stripe={stripePromise}>
+                  <Donate />
+                </Elements>
               } />
-              <Route path="*" element={<Navigate to="/login" />} />
+              <Route path="*" element={<Navigate to="/donate" />} />
             </Routes>
           </Router>
-        </WorkOrderProvider>
       </UserProvider>
     </AuthProvider>
   );
